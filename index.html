@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Even inspreken — Kara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" crossorigin>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F9F6F0; --surface:#FFFFFF; --plum:#4A2C6B;
+    --purple:#7B5BC9; --purple2:#6B3F96; --charcoal:#2C2825; --muted:#7A6E65;
+    --border:#DDD6EC; --borderL:#EDE8F5;
+    --lav1:#E8E2F0; --lav2:#D4C6EC; --lav3:#C9BEDF;
+    --shadow:0 1px 2px rgba(74,44,107,.04), 0 10px 30px rgba(74,44,107,.07);
+  }
+  body{font-family:'Outfit',system-ui,sans-serif; background:var(--bg); color:var(--charcoal); line-height:1.6; -webkit-font-smoothing:antialiased}
+
+  .header{background:linear-gradient(135deg,var(--lav1) 0%,var(--lav2) 50%,var(--lav3) 100%); padding:44px 22px 38px; text-align:center; position:relative; overflow:hidden}
+  .header::before,.header::after{content:''; position:absolute; border-radius:50%; background:rgba(123,91,201,.10)}
+  .header::before{width:280px;height:280px;top:-110px;right:-70px}
+  .header::after{width:180px;height:180px;bottom:-80px;left:-40px}
+  .eyebrow{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--purple); font-weight:700; margin-bottom:12px; position:relative}
+  .header h1{font-size:clamp(28px,7vw,44px); font-weight:800; color:var(--plum); line-height:1.08; letter-spacing:-.02em; margin-bottom:12px; position:relative}
+  .header p{font-size:clamp(15px,2.6vw,17px); color:var(--purple2); max-width:520px; margin:0 auto; line-height:1.55; position:relative}
+
+  .wrap{max-width:680px; margin:0 auto; padding:24px 18px 60px}
+
+  .intro{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:22px 22px; box-shadow:var(--shadow); margin-bottom:26px}
+  .intro h2{font-size:18px; color:var(--plum); font-weight:700; margin-bottom:10px}
+  .intro p{color:var(--muted); font-size:15px; margin-bottom:12px}
+  .intro p:last-child{margin-bottom:0}
+  .intro b{color:var(--charcoal); font-weight:600}
+  .tip{background:#F4EFFA; border:1px solid var(--borderL); border-radius:12px; padding:13px 15px; color:var(--charcoal); font-size:14.5px; line-height:1.55}
+  .tip b{color:var(--purple2); font-weight:700}
+
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:24px 22px; box-shadow:var(--shadow); margin-bottom:18px}
+  .num{display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff; font-family:'Space Mono',monospace; font-weight:700; font-size:15px; margin-bottom:14px}
+  .card h3{font-size:19px; color:var(--plum); font-weight:700; line-height:1.25; margin-bottom:8px}
+  .card .lead{color:var(--charcoal); font-size:15px; margin-bottom:14px}
+  .prompts{list-style:none; display:flex; flex-direction:column; gap:9px}
+  .prompts li{position:relative; padding-left:20px; color:var(--muted); font-size:14.5px; line-height:1.5}
+  .prompts li::before{content:''; position:absolute; left:2px; top:9px; width:7px; height:7px; border-radius:50%; background:var(--lav2)}
+
+  .answer{width:100%; min-height:96px; margin-top:16px; border:1px solid var(--border); border-radius:12px; padding:12px 14px; font-family:inherit; font-size:14.5px; color:var(--charcoal); background:#FCFBF8; resize:vertical; line-height:1.55}
+  .answer:focus{outline:none; border-color:var(--purple); box-shadow:0 0 0 3px rgba(123,91,201,.12)}
+  .answer::placeholder{color:#B7AEC4}
+
+  .section-label{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--purple); font-weight:700; margin:30px 4px 14px}
+
+  .bonus{background:linear-gradient(135deg,#FBF9F4,#F4EFFA); border:1px dashed var(--lav3)}
+  .bonus .num{background:transparent; color:var(--purple2); border:1.5px solid var(--lav3)}
+  .bonus h3{color:var(--purple2)}
+
+  .collect{display:block; margin:26px auto 0; background:linear-gradient(135deg,var(--purple),var(--purple2)); color:#fff; border:none; border-radius:99px; padding:14px 30px; font-family:inherit; font-weight:700; font-size:15px; cursor:pointer; box-shadow:var(--shadow)}
+  .collect:hover{filter:brightness(1.05)}
+  #summaryWrap{display:none; margin-top:18px}
+  #summary{width:100%; min-height:220px; border:1px solid var(--border); border-radius:12px; padding:14px; font-family:inherit; font-size:13.5px; background:#FCFBF8; color:var(--charcoal); line-height:1.5}
+  #copyNote{font-size:13px; color:var(--muted); margin-top:8px; text-align:center}
+
+  .footer{text-align:center; color:var(--muted); font-size:13.5px; margin-top:30px; line-height:1.6}
+  .footer .heart{color:var(--purple); font-weight:700}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="eyebrow">Voor je funnel</div>
+    <h1>Even inspreken, Kara</h1>
+    <p>Een paar vragen om het laatste stuk op te halen: het bewijs. Spreek in of typ wat in je opkomt.</p>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <h2>Hoe je dit doet</h2>
+      <p>Beantwoord de vragen op de manier die voor jou het rustigst voelt. <b>Het hoeft niet netjes of af.</b> Praat of schrijf alsof je het aan een vriendin vertelt, hardop denken mag, herhalen mag, twijfelen mag. Juist die echte woorden zijn wat we nodig hebben.</p>
+      <p class="tip"><b>Liever inspreken?</b> Neem een spraakmemo op met de voicerecorder op je telefoon, of gebruik een tool als Fireflies die je opname meteen voor je uittypt.<br><b>Liever typen?</b> Vul je antwoord gewoon in het vakje onder elke vraag. Onderaan staat een knop die alles voor je onder elkaar zet om te kopiëren.</p>
+      <p>Waarom dit het laatste stuk is: bij jouw soort werk koopt iemand vertrouwen. En vertrouwen bouw je met echte verhalen, niet met mooie beloftes. Dit is precies waarmee je funnel straks gaat landen.</p>
+    </div>
+
+    <div class="section-label">Deel 1 — het bewijs</div>
+
+    <div class="card">
+      <span class="num">1</span>
+      <h3>Wie heb je al geholpen?</h3>
+      <p class="lead">In welke vorm dan ook. Het hoeft niet per se een betaalde klant te zijn.</p>
+      <ul class="prompts">
+        <li>Denk aan eerdere trajecten, gesprekken, sessies, of mensen om je heen die je hebt geholpen.</li>
+        <li>Wie schiet je als eerste te binnen, en wat veranderde er voor diegene?</li>
+        <li>Wat zeiden ze achteraf, of wat zag je bij ze veranderen?</li>
+      </ul>
+      <textarea class="answer" data-label="1. Wie heb je al geholpen?" placeholder="Typ hier je antwoord, of laat leeg als je het inspreekt."></textarea>
+    </div>
+
+    <div class="card">
+      <span class="num">2</span>
+      <h3>Eén verhaal dat je is bijgebleven</h3>
+      <p class="lead">Kies één vrouw en vertel haar verhaal als een verhaaltje.</p>
+      <ul class="prompts">
+        <li>Waar stond ze toen ze bij je kwam? Wat zei ze, wat voelde ze, waar liep ze tegenaan?</li>
+        <li>Wat verschoof er in het contact met jou? Was er een moment dat het kwartje viel?</li>
+        <li>Waar staat ze nu, en wat is er anders dan toen?</li>
+      </ul>
+      <textarea class="answer" data-label="2. Een verhaal dat je is bijgebleven" placeholder="Typ hier je antwoord, of laat leeg als je het inspreekt."></textarea>
+    </div>
+
+    <div class="card">
+      <span class="num">3</span>
+      <h3>Wat krijg je terug van mensen?</h3>
+      <p class="lead">De reacties op je podcast, je DM's, je mails. Letterlijke woorden zijn goud waard.</p>
+      <ul class="prompts">
+        <li>Je noemde al "jij zegt precies wat ik al jaren voel" en "je prikt door me heen". Heb je meer van dat soort reacties?</li>
+        <li>Lees ze gerust letterlijk voor, of stuur screenshots door als je ze hebt.</li>
+        <li>Is er een berichtje dat je echt is bijgebleven? Vertel waarom dat je raakte.</li>
+      </ul>
+      <textarea class="answer" data-label="3. Wat krijg je terug van mensen?" placeholder="Typ hier je antwoord, of laat leeg als je het inspreekt."></textarea>
+    </div>
+
+    <div class="card">
+      <span class="num">4</span>
+      <h3>Jouw eigen resultaat</h3>
+      <p class="lead">Jij bent zelf het levende bewijs van de shift. Maak het tastbaar.</p>
+      <ul class="prompts">
+        <li>Wat is er concreet veranderd in je leven sinds je die omslag maakte? Denk aan vrijheid, Thailand, werk dat niet als werk voelt.</li>
+        <li>Hoe ziet een gewone dag er nu uit, vergeleken met vroeger toen je nog dacht dat hard werken gelijkstond aan vrijheid?</li>
+        <li>Wat zou je tegen jezelf van een paar jaar geleden zeggen?</li>
+      </ul>
+      <textarea class="answer" data-label="4. Jouw eigen resultaat" placeholder="Typ hier je antwoord, of laat leeg als je het inspreekt."></textarea>
+    </div>
+
+    <div class="section-label">Deel 2 — alleen als je nog energie hebt</div>
+
+    <div class="card bonus">
+      <span class="num">5</span>
+      <h3>Jouw woorden bij je methode</h3>
+      <p class="lead">Je programma staat al helder. Dit helpt me het in jouw taal uit te leggen, zonder jargon dat afhaakt.</p>
+      <ul class="prompts">
+        <li>Leg in gewone taal uit wat je bedoelt met <b>magnetisch</b> en met je <b>energieveld</b>, alsof je het vertelt aan iemand die die woorden nog nooit heeft gehoord.</li>
+        <li>Wat is voor jou het verschil tussen forceren en ontvangen, in het echte dagelijks leven?</li>
+        <li>Als je in één zin zou zeggen waarom jouw aanpak blijft plakken terwijl andere cursussen wegzakken, hoe zeg je dat dan?</li>
+      </ul>
+      <textarea class="answer" data-label="5. Jouw woorden bij je methode" placeholder="Typ hier je antwoord, of laat leeg als je het inspreekt."></textarea>
+    </div>
+
+    <button class="collect" id="collectBtn">Zet mijn antwoorden onder elkaar</button>
+    <div id="summaryWrap">
+      <textarea id="summary" readonly></textarea>
+      <div id="copyNote"></div>
+    </div>
+
+    <div class="footer">
+      Geen haast, doe het op je eigen tempo. <span class="heart">Stuur het maar door als je klaar bent.</span>
+    </div>
+
+  </div>
+
+<script>
+  (function(){
+    var btn = document.getElementById('collectBtn');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var blocks = document.querySelectorAll('.answer');
+      var out = 'Antwoorden van Kara\n\n';
+      blocks.forEach(function(t){
+        var label = t.getAttribute('data-label') || '';
+        var val = (t.value || '').trim();
+        out += label + '\n' + (val ? val : '(nog niet ingevuld)') + '\n\n';
+      });
+      var wrap = document.getElementById('summaryWrap');
+      var sum = document.getElementById('summary');
+      var note = document.getElementById('copyNote');
+      sum.value = out;
+      wrap.style.display = 'block';
+      sum.focus(); sum.select();
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(out).then(function(){
+          note.textContent = 'Gekopieerd. Je kunt het nu in een bericht of mail plakken.';
+        }).catch(function(){
+          note.textContent = 'Selecteer de tekst hierboven en kopieer hem zelf.';
+        });
+      } else {
+        note.textContent = 'Selecteer de tekst hierboven en kopieer hem zelf.';
+      }
+      wrap.scrollIntoView({behavior:'smooth'});
+    });
+  })();
+</script>
+</body>
+</html>
